@@ -1,4 +1,5 @@
 flask==2.3.2
+werkzeug==2.3.6
 iniconfig==2.0.0
 packaging==24.2
 pluggy==1.5.0
