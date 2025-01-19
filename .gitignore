@@ -2,3 +2,23 @@ venv/
 __pycache__/
 .vscode/
 .pytest_cache/
+
+
+
+# Environment variables
+.env
+
+# Logs
+*.log
+
+# Coverage reports
+htmlcov/
+.coverage
+.coverage.*
+
+# Test results
+junitxml.xml
+test-results/
+
+# macOS files
+.DS_Store
