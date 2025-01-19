@@ -3,6 +3,7 @@ import sys
 import os
 import unittest
 from flask import json
+from bson import ObjectId
 
 # Add the parent directory to the system path to import the app module
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
@@ -31,7 +32,7 @@ class FlaskTestCase(unittest.TestCase):
         self.app.testing = True
 
         # Add a test user to the database
-        self.test_user = {"username": "Test User", "email": "testuser@example.com"}
+        self.test_user = {"username": "Test User", "email": "testuser@example.com", "role": "merchant"}
         self.user_id = mongo.db.users.insert_one(self.test_user).inserted_id
 
     
@@ -55,6 +56,42 @@ class FlaskTestCase(unittest.TestCase):
         self.assertGreater(len(data), 0)
         self.assertIn("username", data[0])
         self.assertIn("email", data[0])
+
+    
+    def test_create_user(self):
+        """
+        Test the POST /users endpoint to ensure it creates a new user.
+        """
+        new_user = {"username": "newuser", "email": "newuser@example.com", "role": "admin"}
+        response = self.app.post('/users', json=new_user)
+        self.assertEqual(response.status_code, 201)
+        data = json.loads(response.data)
+        self.assertIn("_id", data)
+
+        # Clean up by deleting the created user
+        mongo.db.users.delete_one({"_id": ObjectId(data["_id"])})
+
+    def test_get_user_by_email(self):
+        """
+        Test the GET /user endpoint to retrieve a user by email.
+        """
+        response = self.app.get(f'/user?email={self.test_user["email"]}')
+        self.assertEqual(response.status_code, 200)
+        data = json.loads(response.data)
+        self.assertEqual(data["email"], self.test_user["email"])
+
+    def test_get_user_by_id(self):
+        """
+        Test the GET /user endpoint to retrieve a user by userId which is MongoDB's _id.
+        """
+        response = self.app.get(f'/user?userId={self.user_id}')
+        self.assertEqual(response.status_code, 200)
+        data = json.loads(response.data)
+        self.assertEqual(data["_id"], str(self.user_id))
+        self.assertEqual(data["username"], self.test_user["username"])
+        self.assertEqual(data["email"], self.test_user["email"])
+        self.assertEqual(data["role"], self.test_user["role"])
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -1,5 +1,5 @@
 flask==2.3.2
-Flask-PyMongo==2.3.0
+flask-pymongo==2.3.0
 werkzeug==2.3.6
 iniconfig==2.0.0
 packaging==24.2
