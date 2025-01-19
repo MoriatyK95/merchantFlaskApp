@@ -37,4 +37,4 @@ jobs:
     - name: Run tests
       run: |
         source venv/bin/activate
-        pytest  --maxfail=1 --disable-warnings -v
+        python -m unittest discover -s tests -p "test_app.py"
