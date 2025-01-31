@@ -1,4 +1,4 @@
-# This file is used to create a blueprint for the users module
+# This file sets up the 'users' blueprint, grouping user-related routes together.
 from flask import Blueprint
 
 users_bp = Blueprint('users', __name__)

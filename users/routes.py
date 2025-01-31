@@ -5,7 +5,9 @@ from . import users_bp
 
 @users_bp.route('/users', methods=['GET'])
 def get_users():
-    
+    """
+    Fetches all user documents from the 'users' collection.
+    """
     db = current_app.mongo.db
     users_collection = db.users
     users = users_collection.find()
@@ -18,6 +20,10 @@ def get_users():
 
 @users_bp.route('/users', methods=['POST'])
 def create_user():
+    """
+    Creates a new user document in the 'users' collection,
+    expecting 'username', 'email', and 'role' in the request body.
+    """
     db = current_app.mongo.db
     users_collection = db.users
     data = request.get_json()
@@ -35,6 +41,9 @@ def create_user():
 
 @users_bp.route('/user', methods=['GET'])
 def get_user():
+    """
+    Retrieves a single user document by 'email' or 'userId'.
+    """
     db = current_app.mongo.db
     users_collection = db.users
     email = request.args.get('email')
