@@ -2,6 +2,10 @@ from flask import Flask
 from flask_pymongo import PyMongo
 
 def create_app():
+    """
+    Creates and configures the Flask application, sets up MongoDB, 
+    and registers the 'users' blueprint.
+    """
     app = Flask(__name__)
 
     # Configuration for MongoDB
