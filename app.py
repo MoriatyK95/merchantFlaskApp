@@ -1,3 +1,6 @@
+# Import and patch all supported libraries for Datadog APM
+from ddtrace import tracer
+
 from flask import Flask
 from flask_pymongo import PyMongo
 
@@ -18,6 +21,7 @@ def create_app():
     app.register_blueprint(users_bp)
 
     @app.route('/')
+    @tracer.wrap('flask.request', service='flask', resource='home', span_type='web')
     def home():
         return "Hello, Flask!"
     
